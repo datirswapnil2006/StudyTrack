@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream-bg: #FFF9F0;
+  --color-cream-card: #FFFCF7;
+  --color-accent-blue: #DCEBFA;
+  --color-primary-blue: #6B9ACF;
+  --color-primary-blue-hover: #5888BF;
+  --color-navy-text: #24324A;
+  --color-muted-gray: #64748B;
+  --color-soft-green: #3B8A61;
+  --color-soft-green-bg: #EAF5ED;
+  --color-soft-coral: #D9534F;
+  --color-soft-coral-bg: #FDEEEB;
+  --color-soft-lavender: #7E57C2;
+  --color-soft-lavender-bg: #F3EBF9;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Outfit', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+:root {
+  --app-bg: #FFF9F0;
+  --app-text: #24324A;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FFF9F0;
+  color: #24324A;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+/* Custom Scrollbar for clean aesthetics */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF9F0;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Card hover and micro-transitions */
+.card-shadow {
+  box-shadow: 0 4px 20px -2px rgba(36, 50, 74, 0.05), 0 2px 6px -1px rgba(36, 50, 74, 0.03);
+}
+
+.card-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(36, 50, 74, 0.09), 0 4px 8px -2px rgba(36, 50, 74, 0.04);
+}
+
+/* Badges and tags */
+.badge-coral {
+  background-color: #FDEEEB;
+  color: #D9534F;
+  border: 1px solid #F8C6BF;
+}
+.badge-lavender {
+  background-color: #F3EBF9;
+  color: #7E57C2;
+  border: 1px solid #DFCEF4;
+}
+.badge-green {
+  background-color: #EAF5ED;
+  color: #3B8A61;
+  border: 1px solid #BFE3CD;
+}
+.badge-blue {
+  background-color: #DCEBFA;
+  color: #2B6CB0;
+  border: 1px solid #BCD8F5;
+}
