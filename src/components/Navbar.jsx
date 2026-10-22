@@ -241,7 +241,7 @@ export default function Navbar({ activeTab, setActiveTab, streak = 0, onOpenAuth
               </div>
             ) : (
               <button
-                onClick={onOpenAuth}
+                onClick={() => onOpenAuth && onOpenAuth()}
                 className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#6B9ACF] hover:bg-[#5888BF] text-white text-xs font-bold shadow-sm shadow-[#6B9ACF]/30 hover:scale-102 transition-all cursor-pointer"
               >
                 <LogIn className="w-4 h-4" />

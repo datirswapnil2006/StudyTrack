@@ -72,7 +72,7 @@ export default function AuthModal({ isOpen, onClose, promptMessage = '' }) {
           <X className="w-5 h-5" />
         </button>
 
-        {promptMessage && (
+        {typeof promptMessage === 'string' && promptMessage.trim() && (
           <div className="mb-4 p-2.5 rounded-xl bg-[#DCEBFA]/70 border border-[#BCD8F5] text-[#1E4E8C] text-xs font-semibold text-center flex items-center justify-center gap-1.5">
             <Lock className="w-3.5 h-3.5 shrink-0" />
             <span>{promptMessage}</span>

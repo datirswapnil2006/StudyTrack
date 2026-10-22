@@ -23,7 +23,10 @@ function MainApp() {
   const [isGlobalTopicModalOpen, setIsGlobalTopicModalOpen] = useState(false);
 
   const handleOpenAuth = (msg = '') => {
-    setAuthPromptMessage(msg || 'Sign in to access your personal study schedule');
+    const prompt = typeof msg === 'string' && msg.trim()
+      ? msg
+      : 'Sign in to access your personal study schedule';
+    setAuthPromptMessage(prompt);
     setIsAuthModalOpen(true);
   };
 
