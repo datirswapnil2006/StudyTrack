@@ -18,7 +18,8 @@ import {
   Shield,
   Sparkles,
   Zap,
-  Target
+  Target,
+  Lock
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { formatReadableDate, getKolkataDateString, TIMEZONE } from '../utils/dateUtils';
@@ -73,6 +74,17 @@ export default function Navbar({ activeTab, setActiveTab, streak = 0, onOpenAuth
   const userInitial = (user?.user_metadata?.full_name || user?.email || 'U')[0].toUpperCase();
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Learner';
 
+  const handleTabClick = (tabId) => {
+    if (!user) {
+      if (onOpenAuth) {
+        onOpenAuth('Please sign in to access your study schedule and performance analytics.');
+      }
+      return;
+    }
+    setActiveTab(tabId);
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-[#FFF9F0]/90 backdrop-blur-xl border-b border-[#24324A]/10 shadow-[0_2px_12px_rgba(36,50,74,0.03)] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,7 +92,7 @@ export default function Navbar({ activeTab, setActiveTab, streak = 0, onOpenAuth
           {/* Brand Logo & Interactive Name */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setActiveTab('dashboard')}
+              onClick={() => handleTabClick('dashboard')}
               className="flex items-center gap-3 group text-left focus:outline-none"
             >
               <div className="relative">
@@ -122,11 +134,12 @@ export default function Navbar({ activeTab, setActiveTab, streak = 0, onOpenAuth
           <nav className="hidden md:flex items-center gap-1.5 bg-white/70 p-1.5 rounded-2xl border border-slate-200/70 shadow-xs">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = activeTab === item.id;
+              const isActive = user && activeTab === item.id;
               return (
                 <button
                   key={item.id}
-                  onClick={() => setActiveTab(item.id)}
+                  onClick={() => handleTabClick(item.id)}
+                  title={!user ? 'Sign in required to access this section' : item.label}
                   className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer ${
                     isActive
                       ? 'bg-[#6B9ACF] text-white shadow-sm shadow-[#6B9ACF]/30 scale-[1.02]'
@@ -135,6 +148,9 @@ export default function Navbar({ activeTab, setActiveTab, streak = 0, onOpenAuth
                 >
                   <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#64748B]'}`} />
                   <span>{item.label}</span>
+                  {!user && (
+                    <Lock className="w-3 h-3 text-slate-400 opacity-60 ml-0.5" />
+                  )}
                 </button>
               );
             })}
@@ -261,22 +277,26 @@ export default function Navbar({ activeTab, setActiveTab, streak = 0, onOpenAuth
 
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            const isActive = user && activeTab === item.id;
             return (
               <button
                 key={item.id}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                onClick={() => handleTabClick(item.id)}
+                className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                   isActive
                     ? 'bg-[#6B9ACF] text-white shadow-xs'
                     : 'text-[#64748B] hover:text-[#24324A] hover:bg-white'
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-[#64748B]'}`} />
-                <span>{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-[#64748B]'}`} />
+                  <span>{item.label}</span>
+                </div>
+                {!user && (
+                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-200/70 text-slate-600 flex items-center gap-1">
+                    <Lock className="w-2.5 h-2.5" /> Sign in
+                  </span>
+                )}
               </button>
             );
           })}

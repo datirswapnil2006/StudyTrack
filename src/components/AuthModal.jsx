@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, Mail, Lock, User, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export default function AuthModal({ isOpen, onClose }) {
+export default function AuthModal({ isOpen, onClose, promptMessage = '' }) {
   const { signIn, signUp, useDemoAccount, isConfigured } = useAuth();
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
@@ -71,6 +71,13 @@ export default function AuthModal({ isOpen, onClose }) {
         >
           <X className="w-5 h-5" />
         </button>
+
+        {promptMessage && (
+          <div className="mb-4 p-2.5 rounded-xl bg-[#DCEBFA]/70 border border-[#BCD8F5] text-[#1E4E8C] text-xs font-semibold text-center flex items-center justify-center gap-1.5">
+            <Lock className="w-3.5 h-3.5 shrink-0" />
+            <span>{promptMessage}</span>
+          </div>
+        )}
 
         <div className="mb-6 text-center">
           <div className="w-12 h-12 rounded-2xl bg-[#DCEBFA] text-[#1E4E8C] flex items-center justify-center mx-auto mb-3">

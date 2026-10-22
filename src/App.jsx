@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import AuthModal from './components/AuthModal';
+import LoginPromptView from './components/LoginPromptView';
 import MistakeModal from './components/MistakeModal';
 import TopicModal from './components/TopicModal';
 import DashboardView from './views/DashboardView';
@@ -17,8 +18,14 @@ function MainApp() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [streak, setStreak] = useState(0);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authPromptMessage, setAuthPromptMessage] = useState('');
   const [isGlobalMistakeModalOpen, setIsGlobalMistakeModalOpen] = useState(false);
   const [isGlobalTopicModalOpen, setIsGlobalTopicModalOpen] = useState(false);
+
+  const handleOpenAuth = (msg = '') => {
+    setAuthPromptMessage(msg || 'Sign in to access your personal study schedule');
+    setIsAuthModalOpen(true);
+  };
 
   useEffect(() => {
     if (user) {
@@ -59,37 +66,43 @@ function MainApp() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         streak={streak}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onOpenAuth={handleOpenAuth}
       />
 
       {/* Primary Content Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        {activeTab === 'dashboard' && (
-          <DashboardView
-            user={user}
-            onNavigate={(tab) => setActiveTab(tab)}
-            onOpenMistakeModal={() => setIsGlobalMistakeModalOpen(true)}
-            onOpenTopicModal={() => setIsGlobalTopicModalOpen(true)}
-          />
-        )}
+        {!user ? (
+          <LoginPromptView onOpenAuth={handleOpenAuth} />
+        ) : (
+          <>
+            {activeTab === 'dashboard' && (
+              <DashboardView
+                user={user}
+                onNavigate={(tab) => setActiveTab(tab)}
+                onOpenMistakeModal={() => setIsGlobalMistakeModalOpen(true)}
+                onOpenTopicModal={() => setIsGlobalTopicModalOpen(true)}
+              />
+            )}
 
-        {activeTab === 'timetable' && (
-          <TimetableView
-            user={user}
-            onOpenMistakeModal={() => setIsGlobalMistakeModalOpen(true)}
-          />
-        )}
+            {activeTab === 'timetable' && (
+              <TimetableView
+                user={user}
+                onOpenMistakeModal={() => setIsGlobalMistakeModalOpen(true)}
+              />
+            )}
 
-        {activeTab === 'mistakes' && (
-          <MistakesView user={user} />
-        )}
+            {activeTab === 'mistakes' && (
+              <MistakesView user={user} />
+            )}
 
-        {activeTab === 'topics' && (
-          <DifficultTopicsView user={user} />
-        )}
+            {activeTab === 'topics' && (
+              <DifficultTopicsView user={user} />
+            )}
 
-        {activeTab === 'reports' && (
-          <ReportsView user={user} />
+            {activeTab === 'reports' && (
+              <ReportsView user={user} />
+            )}
+          </>
         )}
       </main>
 
@@ -109,7 +122,11 @@ function MainApp() {
       {/* Global Modals */}
       <AuthModal
         isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
+        onClose={() => {
+          setIsAuthModalOpen(false);
+          setAuthPromptMessage('');
+        }}
+        promptMessage={authPromptMessage}
       />
 
       {isGlobalMistakeModalOpen && (
